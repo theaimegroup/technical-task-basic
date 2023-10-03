@@ -1,34 +1,23 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { store } from './redux/store';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ChakraProvider } from '@chakra-ui/react';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import theme from './theme';
 
-//Initialize Apollo Client for hasura connection
-const client = new ApolloClient({
-  uri: "hasura_graphql_URL",
-  cache: new InMemoryCache({ addTypename: false }),
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-    "X-Hasura-Admin-Secret":
-      "hasura_admin_secret_here",
-  },
-});
-
-
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
+ReactDOM.render(
   <React.StrictMode>
-    <ChakraProvider>
-      <ApolloProvider client={client}>
+    <Provider store={store}>
+      <CssBaseline />
+      <ThemeProvider theme={theme}>
         <App />
-      </ApolloProvider>
-    </ChakraProvider>
-  </React.StrictMode>
+      </ThemeProvider>
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function
